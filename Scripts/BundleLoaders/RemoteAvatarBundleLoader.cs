@@ -5,6 +5,9 @@ using UnityEngine.Networking;
 
 namespace UniversalProfileSDK.Avatars
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RemoteAvatarBundleLoader : AvatarBundleLoaderBase
     {
         readonly WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
@@ -14,9 +17,16 @@ namespace UniversalProfileSDK.Avatars
             
         }
         
+        /// <summary>
+        /// Load avatar bundle coroutine
+        /// </summary>
+        /// <param name="onLoaded">Delegate to run on successful load</param>
+        /// <param name="onFailed">Delegate to run on failed load</param>
+        /// <param name="onProgressChanged">Delegate to run every fixed update step to, for example, update an UI progress bar somewhere</param>
+        /// <returns>IEnumerator used for coroutines</returns>
         public override IEnumerator LoadAvatarBundle(AvatarSDKDelegates.AvatarBundleLoadCompleted onLoaded, AvatarSDKDelegates.AvatarBundleLoadFailed onFailed, AvatarSDKDelegates.ProgressChangedDelegate onProgressChanged)
         {
-            string url = AvatarSDKUtils.IpfsStringToIpfsURL(UPAvatar.Url);
+            string url = AvatarSDKUtils.IpfsStringToFullIpfsURL(UPAvatar.Url);
             var bundleHandler = new DownloadHandlerAssetBundle(url, 0)
             {
                 autoLoadAssetBundle = false

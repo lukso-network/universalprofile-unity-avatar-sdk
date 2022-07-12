@@ -6,14 +6,24 @@ using UnityEngine;
 
 namespace UniversalProfileSDK.Avatars
 {
+    /// <summary>
+    /// Simple avatar cache storing references of UPAvatars to AssetBundles
+    /// </summary>
     public static class AvatarCache
     {
+        /// <summary>
+        /// Runs after avatar was successfully loaded, with the loaded avatar GameObject as it's parameter
+        /// </summary>
         public delegate void AvatarLoadSuccessDelegate(GameObject avatar);
+        
+        /// <summary>
+        /// Runs on avatar download failure with the exception that occured as it's parameter 
+        /// </summary>
         public delegate void AvatarLoadErrorDelegate(Exception exception);
 
         static List<CachedAvatar> Cache = new List<CachedAvatar>();
         static WaitForFixedUpdate WaitForFixedUpdate = new WaitForFixedUpdate();
-
+        
         class CachedAvatar
         {
             public AssetBundle ContainingBundle;
@@ -26,12 +36,21 @@ namespace UniversalProfileSDK.Avatars
             }
         }
 
+        /// <summary>
+        /// Coroutine to download avatar AssetBundle from UPAvatar and load it.
+        /// </summary>
+        /// <param name="upAvatar">UPAvatar to download AssetBundle from</param>
+        /// <param name="onSuccess">Delegate to run on successful download</param>
+        /// <param name="onFailed">Delegate to run on failed download</param>
+        /// <param name="onProgressChanged">Delegate to run every fixed update step to, for example, update a progress bar in the UI somewhere</param>
+        /// <returns>IEnumerator for coroutines</returns>
         public static IEnumerator LoadAvatar(UPAvatar upAvatar, AvatarLoadSuccessDelegate onSuccess, AvatarLoadErrorDelegate onFailed, AvatarSDKDelegates.ProgressChangedDelegate onProgressChanged = null)
         {
-            CachedAvatar cachedAvatar = Cache.FirstOrDefault(av => av.UPAvatar.Equals(upAvatar));
-
             AssetBundle avatarBundle = null;
             Exception loaderException = null;
+            
+            // Get avatar from cache or download and cache it
+            CachedAvatar cachedAvatar = Cache.FirstOrDefault(av => av.UPAvatar.Equals(upAvatar));
             if(cachedAvatar != null)
             {
                 avatarBundle = cachedAvatar.ContainingBundle;
@@ -43,6 +62,7 @@ namespace UniversalProfileSDK.Avatars
                 (bundle) =>
                 {
                     avatarBundle = bundle;
+                    Cache.Add(new CachedAvatar(upAvatar, avatarBundle));
                 },
                 (exception) =>
                 {
@@ -59,8 +79,8 @@ namespace UniversalProfileSDK.Avatars
                 onFailed?.Invoke(loaderException);
                 yield break;
             }
-
-            Cache.Add(new CachedAvatar(upAvatar, avatarBundle));
+            
+            // Load the avatar from it's bundle
             AssetBundleRequest assetBundleRequest = avatarBundle.LoadAssetAsync<GameObject>("_CustomAvatar");
             while(!assetBundleRequest.isDone)
             {

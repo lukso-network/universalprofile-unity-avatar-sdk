@@ -2,7 +2,12 @@
 {
     public static class AvatarSDKUtils
     {
-        public static string IpfsStringToIpfsURL(string ipfsUrl)
+        /// <summary>
+        /// Replaces ipfs:// with the full ipfs url as defined in AvatarSDKConfig.IpfsUrl
+        /// </summary>
+        /// <param name="ipfsUrl">Ipfs url string to replace</param>
+        /// <returns>Full ipfs url</returns>
+        public static string IpfsStringToFullIpfsURL(string ipfsUrl)
         {
             if(string.IsNullOrWhiteSpace(ipfsUrl) || !ipfsUrl.StartsWith("ipfs://"))
                 return ipfsUrl;

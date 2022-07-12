@@ -2,13 +2,14 @@
 
 namespace UniversalProfileSDK.Avatars
 {
+    /// <summary>
+    /// Base class for avatar bundle loaders
+    /// </summary>
     public abstract class AvatarBundleLoaderBase
     {
-
-
         protected UPAvatar UPAvatar { get; set; }
 
-        public AvatarBundleLoaderBase(UPAvatar upAvatar)
+        protected AvatarBundleLoaderBase(UPAvatar upAvatar)
         {
             UPAvatar = upAvatar;
         }

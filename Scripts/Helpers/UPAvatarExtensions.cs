@@ -6,6 +6,11 @@ namespace UniversalProfileSDK
 {
     public static class UPAvatarExtensions
     {
+        /// <summary>
+        /// Gets the platform from an UPAvatar's FileType field. Attempts to parse it to a unity RuntimePlatform.
+        /// </summary>
+        /// <param name="upAvatar">UPAvatar to get platform of</param>
+        /// <returns>RuntimePlatform or null if parsing failed</returns>
         public static RuntimePlatform? GetPlatformFromUPAvatar(this UPAvatar upAvatar)
         {
             string fileType = upAvatar.FileType;
@@ -31,6 +36,11 @@ namespace UniversalProfileSDK
             return null;
         }
         
+        /// <summary>
+        /// Checks whether UPAvatar's platform matches our current platform.
+        /// </summary>
+        /// <param name="upAvatar">UPAvatar to check</param>
+        /// <returns>True if UPAvatar's platform matches our current one</returns>
         public static bool UPAvatarIsForCurrentPlatform(this UPAvatar upAvatar)
         {
             RuntimePlatform? platform = GetPlatformFromUPAvatar(upAvatar);

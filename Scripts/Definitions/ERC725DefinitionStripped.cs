@@ -2,6 +2,8 @@
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
 
+// Stripped down version of ERC725 definition including only the getData method
+
 namespace UniversalProfileSDK.Contracts
 {
     [Function("getData", "bytes[]")]
