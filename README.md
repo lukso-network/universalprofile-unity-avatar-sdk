@@ -28,3 +28,11 @@ If an asset bundle has been downloaded before it will be loaded from the cache, 
 As before, this is method is meant to run as a coroutine and calls these delegates in case of success or failure. 
 - `AvatarLoadSuccessDelegate(GameObject avatar)` - If bundle download/load succeeds, the avatar is loaded and this delegate is called with the loaded avatar being it's parameter.
 - `AvatarLoadErrorDelegate(Exception exception)` - If bundle download/load fails, this delegate is called with the exception that occured being it's parameter.
+
+## Avatar Asset Bundles
+Asset bundles containing avatars are meant to contain a single humanoid avatar each.
+
+In order for the avatar to be instantiated by the SDK, a prefab of a setup humanoid avatar needs to be included and satisfy the following conditions:
+- The prefab needs to be named `_CustomAvatar`
+- The prefab needs to be in the root of the asset bundle's assets (so, Assets/_CustomAvatar)
+- Since the SDK can filter platforms, the asset bundle should match the [Runtime Platform](https://docs.unity3d.com/ScriptReference/RuntimePlatform.html) in the `fileType` field in the LSP3 Metadata json.
